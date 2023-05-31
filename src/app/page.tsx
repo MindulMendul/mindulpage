@@ -1,11 +1,9 @@
-export default function Home() {
+export const Home = () => {
   return (
-    <main className="flex min-h-screen flex-col">
-      <div className="flex">
-        <img src={"versel.svg"} width='25%'/>
-        Mindul
-      </div>
+    <main className="flex">
+      Mindul Page
     </main>
-  )
+  );
 }
 
+export default Home;
