@@ -1,3 +1,4 @@
+import { witchLine } from '@/util/witch';
 import * as THREE from 'three';
 
 export const useThree = (canvasRef:any) => {
@@ -25,7 +26,7 @@ export const useThree = (canvasRef:any) => {
 
 
   
-  let a = 4, t = -a;
+  let a = 0, t = 10;
   const curVector = new THREE.Vector3(t, t, t);
   const geometrySphere = new THREE.SphereGeometry( 0.1, 16, 16 );
   const materialSphere = new THREE.MeshBasicMaterial( { color: 0xFF00FF } );
@@ -57,15 +58,13 @@ export const useThree = (canvasRef:any) => {
     }
   
     renderer.render( scene, camera );
+ 
+    t+=(a-t)/1000;
+    const {x, z} = witchLine(5, 4, t);
 
-
-    t+=(a-t)/50;
-    if(Math.abs(t-a)<0.1) {t=a; a*=-1;}
-    else if(Math.abs(t+a)<0.1) {t=-a; a*=-1;}
-    
-    curVector.set(t,0,t);
+    curVector.set(x,0,z);
     sphere.position.set(curVector.x, curVector.y, curVector.z);
-    console.log(sphere.position);
+    //console.log(sphere.position);
       
     window.requestAnimationFrame(animate);
   };

@@ -3,6 +3,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
+import { HSVtoRGB } from './color';
 
 export class LoaderClass {
   public loadModel = (scene:THREE.Scene, locVector:any) => {
@@ -26,7 +27,11 @@ export class LoaderClass {
     }
     );
   }
-  
+  /* accepts parameters
+ * h  Object = {h:x, s:y, v:z}
+ * OR 
+ * h, s, v
+*/
   public loadSphere (scene:THREE.Scene, locVector:THREE.Vector3) {
     const geometrySphere = new THREE.SphereGeometry( 0.1, 16, 16 );
     const materialSphere = new THREE.MeshBasicMaterial( { color: 0xFF00FF } );
@@ -35,10 +40,10 @@ export class LoaderClass {
     scene.add( sphere );
   }
   
-  public loadCube (scene:THREE.Scene, locVector:THREE.Vector3) {
+  public loadCube (scene:THREE.Scene, locVector:THREE.Vector3, i:number) {
     const edgeLen=0.3;
     const geometry = new THREE.BoxGeometry( edgeLen, edgeLen, edgeLen );
-    const material = new THREE.MeshBasicMaterial( { color: 0x0000FF } );
+    const material = new THREE.MeshBasicMaterial( { color: HSVtoRGB(i*20, 1, 1) } );
     const cube = new THREE.Mesh( geometry, material );
     cube.position.set(locVector.x, locVector.y, locVector.z);
     
