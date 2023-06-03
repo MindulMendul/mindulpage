@@ -1,7 +1,7 @@
 export const Home = () => {
   return (
     <main className="">
-      Mindul Page
+      Mindul Bot
     </main>
   );
   

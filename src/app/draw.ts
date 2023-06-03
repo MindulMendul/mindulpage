@@ -1,12 +1,12 @@
 import * as THREE from 'three';
-import { loadLine } from './line';
-import { loadCube, loadSphere } from './sphere';
+import { LoaderClass } from './loader';
 
 export class DrawClass {
   scene;
   width;
   radius;
   precision=24;
+  loader=new LoaderClass();
 
   constructor(scene:THREE.Scene, width:number, radius:number){
     this.scene=scene;
@@ -31,23 +31,24 @@ export class DrawClass {
   }
 
   public drawLine(N:number) {
-    const points = [-10, 0, 0];
+    const INF=100;
+    const points = [-INF, 0, 0];
     for(let i=0; i<N; i++){
       if(i%2) this.drawCircleLeft(points, -this.width, 2*this.radius*i);
       else this.drawCircleRight(points, this.width, 2*this.radius*i);
     }
-    points.push((2*Number(N%2==0)-1)*10);
+    points.push((2*Number(N%2==0)-1)*INF);
     points.push(0);
     points.push(2*this.radius*N);
-    loadLine(this.scene, points, 0.005);
+    this.loader.loadLine(this.scene, points, 0.005);
   }
 
-  private drawSection(locVecter:THREE.Vector3) {
-    loadSphere(this.scene, locVecter);
+  private drawSection(locVector:THREE.Vector3) {
+    this.loader.loadSphere(this.scene, locVector);
     const height=1;
-    loadLine(this.scene, [locVecter.x, locVecter.y, locVecter.z, locVecter.x, locVecter.y+height, locVecter.z], 0.001);
-    const vec = new THREE.Vector3(locVecter.x, locVecter.y+height, locVecter.z);
-    loadCube(this.scene, vec);
+    this.loader.loadLine(this.scene, [locVector.x, locVector.y, locVector.z, locVector.x, locVector.y+height, locVector.z], 0.001);
+    const vec = new THREE.Vector3(locVector.x, locVector.y+height, locVector.z);
+    this.loader.loadCube(this.scene, vec);
   }
 
   public drawSections(N:number) {
@@ -56,6 +57,11 @@ export class DrawClass {
     for(let i=0; i<N; i++){
       this.drawSection(new THREE.Vector3(locX[i%4], 0, this.radius*i));
     }
+  }
+
+  public drawBall(locVector:THREE.Vector3){
+    
+    return 
   }
 }
 

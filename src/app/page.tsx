@@ -1,7 +1,9 @@
+import Three from "./three";
+
 export const Home = () => {
   return (
     <main className="flex">
-      Mindul Page
+      <Three/>
     </main>
   );
 }
