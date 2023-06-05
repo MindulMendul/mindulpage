@@ -1,0 +1,11 @@
+Model Information:
+* title:	Little Witch Academia
+* source:	https://sketchfab.com/3d-models/little-witch-academia-52d2cafc27c1440c987764294a89d2eb
+* author:	qnaman (https://sketchfab.com/qnaman)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Little Witch Academia" (https://sketchfab.com/3d-models/little-witch-academia-52d2cafc27c1440c987764294a89d2eb) by qnaman (https://sketchfab.com/qnaman) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
