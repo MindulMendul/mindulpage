@@ -39,6 +39,7 @@ export const drawBall = (scene: THREE.Scene) => {
   const geometrySphere = new THREE.SphereGeometry(1, 16, 16);
   const materialSphere = new THREE.MeshBasicMaterial({ color: 0xFF00FF });
   const ball = new THREE.Mesh(geometrySphere, materialSphere);
+  ball.name="ball";
   scene.add(ball);
   return ball;
 }
