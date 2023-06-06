@@ -1,4 +1,4 @@
-export const witchLine = (hr:number, vr:number, theta:number) => {
+export const witch = (hr:number, vr:number, theta:number) => {
   const x=Math.sin(Math.PI*theta)*hr;
   const y = 0;
   const az=(2*(Math.floor(theta)%2)-1);

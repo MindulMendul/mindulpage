@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 type threeConstProps = {
-  sectionNum: number
+  sections: string[]
   horizontalRadius: number
   verticalRadius: number
   zRadius: number
@@ -10,10 +10,10 @@ type threeConstProps = {
 
 
 export const threeConstContext = createContext({
-  sectionNum:20,
+  sections:["mindulbot", "matilda", "slidepuzzle", "vi828583", "forstudy"],
   horizontalRadius: 5,
   verticalRadius:4,
-  zRadius: 25,
+  zRadius: 30,
   zTheta: Math.PI/4
 } as threeConstProps);
 
