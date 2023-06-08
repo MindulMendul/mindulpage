@@ -24,18 +24,21 @@ const drawSection = (scene: THREE.Scene, index: number, name:string, locVector: 
   const height = 1;
   loadLine(scene, [locVector.x, locVector.y, locVector.z, locVector.x, locVector.y + height, locVector.z], 0.001);
   const vec1 = new THREE.Vector3(locVector.x, locVector.y + height, locVector.z);
-  loadCube(scene, vec1, index, name );
+  const res = loadCube(scene, vec1, index, name );
   const vec2 = new THREE.Vector3(locVector.x, locVector.y + 2*height, locVector.z);
   loadText(scene, vec2, name);
+  return res;
 }
 
 export const drawSections = (scene: THREE.Scene, sections: string[], horizontalRadius: number, verticalRadius: number) => {
   const sectionNum=sections.length;
+  const res = [];
   drawLine(scene, Math.floor(sectionNum / 2), horizontalRadius, verticalRadius);
   for (let i = 0; i < sectionNum; i++) {
     const { x, z } = witch(horizontalRadius, verticalRadius, (5 * i + 1) / 10);
-    drawSection(scene, i, sections[i], new THREE.Vector3(x, 0, z));
+    res.push(drawSection(scene, i, sections[i], new THREE.Vector3(x, 0, z)));
   }
+  return res;
 }
 
 export const drawBall = (scene: THREE.Scene) => {
