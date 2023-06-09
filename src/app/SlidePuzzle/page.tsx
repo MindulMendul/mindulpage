@@ -1,7 +1,10 @@
+import BackButton from "@/components/backButton";
+
 export const Home = () => {
   return (
     <main className="">
-      Mindul Page
+      Slide Puzzle
+      <BackButton/>
     </main>
   );
   

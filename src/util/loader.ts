@@ -3,7 +3,11 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { HSVtoRGB } from './color';
+
+import ttf from '@/fonts/helvetiker_regular.typeface.json';
 
 export const loadModel = (scene: THREE.Scene, locVector: any) => {
   const loader = new GLTFLoader();
@@ -37,7 +41,7 @@ export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
   return sphere;
 }
 
-export const loadCube = (scene: THREE.Scene, locVector: THREE.Vector3, name: string, i: number) => {
+export const loadCube = (scene: THREE.Scene, locVector: THREE.Vector3, i: number, name: string) => {
   const edgeLen = 1;
   const geometry = new THREE.BoxGeometry(edgeLen, edgeLen, edgeLen);
   const material = new THREE.MeshBasicMaterial({ color: HSVtoRGB(i * 20, 1, 1) });
@@ -75,3 +79,34 @@ export const loadGround = (scene: THREE.Scene, locVector: any) => {
 
   return ground;
 }
+
+export const loadText = (scene:THREE.Scene, locVector: any, text:string) => {
+  const fontLoader = new FontLoader();
+  const font = fontLoader.parse(ttf);
+  const geometry = new TextGeometry(text, { 
+    font: font,
+    size: 1,
+    height: 0.1,
+    curveSegments: 12,
+    bevelEnabled: false,
+    bevelThickness: 0,
+    bevelSize: 0.8,
+    bevelOffset: 0,
+    bevelSegments: 0.3
+  });
+
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xffffff, 
+    wireframe: true
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+
+  const measureBox = new THREE.Box3().setFromObject(mesh);
+  const measure = new THREE.Vector3();
+  measureBox.getSize(measure);
+  
+  mesh.position.set(locVector.x-measure.x/2, locVector.y, locVector.z);
+  mesh.rotateX(-Math.PI/6);
+  scene.add(mesh);
+} 

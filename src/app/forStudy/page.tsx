@@ -3,7 +3,7 @@ import BackButton from "@/components/backButton";
 export const Home = () => {
   return (
     <main className="">
-      Mindul Bot
+      for Study
       <BackButton/>
     </main>
   );
