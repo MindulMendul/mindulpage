@@ -13,7 +13,7 @@ export const threeConstContext = createContext({
   sections:["mindulbot", "matilda", "slidepuzzle", "vi828583", "forstudy"],
   horizontalRadius: 5,
   verticalRadius:4,
-  zRadius: 30,
+  zRadius: 40,
   zTheta: Math.PI/4
 } as threeConstProps);
 

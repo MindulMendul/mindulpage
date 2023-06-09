@@ -21,11 +21,11 @@ const drawLine = (scene: THREE.Scene, N: number, horizontalRadius: number, verti
 }
 
 const drawSection = (scene: THREE.Scene, index: number, name:string, locVector: THREE.Vector3) => {
-  const height = 1;
+  const height = 3;
   loadLine(scene, [locVector.x, locVector.y, locVector.z, locVector.x, locVector.y + height, locVector.z], 0.001);
   const vec1 = new THREE.Vector3(locVector.x, locVector.y + height, locVector.z);
   const res = loadCube(scene, vec1, index, name );
-  const vec2 = new THREE.Vector3(locVector.x, locVector.y + 2*height, locVector.z);
+  const vec2 = new THREE.Vector3(locVector.x, locVector.y + 1.5*height, locVector.z);
   loadText(scene, vec2, name);
   return res;
 }
@@ -42,8 +42,8 @@ export const drawSections = (scene: THREE.Scene, sections: string[], horizontalR
 }
 
 export const drawBall = (scene: THREE.Scene) => {
-  const geometrySphere = new THREE.SphereGeometry(1, 16, 16);
-  const materialSphere = new THREE.MeshBasicMaterial({ color: 0xFF00FF });
+  const geometrySphere = new THREE.SphereGeometry(0.3, 16, 16);
+  const materialSphere = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
   const ball = new THREE.Mesh(geometrySphere, materialSphere);
   ball.name="ball";
   scene.add(ball);
