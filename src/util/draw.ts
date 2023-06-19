@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { loadLine, loadCube, loadText } from './loader';
 import { witch } from './witch';
 
-const precision = 24;
+const precision = 100;
 
 const drawLine = (scene: THREE.Scene, N: number, horizontalRadius: number, verticalRadius: number) => {
   const INF = 100;
@@ -22,7 +22,7 @@ const drawLine = (scene: THREE.Scene, N: number, horizontalRadius: number, verti
 
 const drawSection = (scene: THREE.Scene, index: number, name:string, locVector: THREE.Vector3) => {
   const height = 3;
-  loadLine(scene, [locVector.x, locVector.y, locVector.z, locVector.x, locVector.y + height, locVector.z], 0.001);
+  loadLine(scene, [locVector.x, locVector.y, locVector.z, locVector.x, locVector.y + height, locVector.z], 0.003);
   const vec1 = new THREE.Vector3(locVector.x, locVector.y + height, locVector.z);
   const res = loadCube(scene, vec1, index, name );
   const vec2 = new THREE.Vector3(locVector.x, locVector.y + 1.5*height, locVector.z);
@@ -36,7 +36,8 @@ export const drawSections = (scene: THREE.Scene, sections: string[], horizontalR
   drawLine(scene, Math.floor(sectionNum / 2), horizontalRadius, verticalRadius);
   for (let i = 0; i < sectionNum; i++) {
     const { x, z } = witch(horizontalRadius, verticalRadius, (5 * i + 1) / 10);
-    res.push(drawSection(scene, i, sections[i], new THREE.Vector3(x, 0, z)));
+    if(i==sectionNum-1) res.push(drawSection(scene, i, sections[i], new THREE.Vector3(x, 0, verticalRadius * (sectionNum-1))));
+    else res.push(drawSection(scene, i, sections[i], new THREE.Vector3(x, 0, z)));
   }
   return res;
 }
