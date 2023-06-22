@@ -2,7 +2,7 @@ import Three from "../components/three";
 
 export const Home = () => {
   return (
-    <main className="flex">
+    <main className="home">
       <Three/>
     </main>
   );

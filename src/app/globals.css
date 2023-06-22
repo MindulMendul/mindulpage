@@ -2,7 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-body {
+home {
   overflow: hidden;
   margin: 0px;
   margin-top: 0px;

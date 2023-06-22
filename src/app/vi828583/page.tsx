@@ -1,10 +1,10 @@
-import BackButton from "@/components/backButton";
+import Navigation from "@/components/NavBar";
 
 export const Home = () => {
   return (
     <main className="">
       VI-828583
-      <BackButton/>
+      <Navigation />
     </main>
   );
   
