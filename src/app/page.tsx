@@ -1,4 +1,4 @@
-import Three from "./three";
+import Three from "../components/three";
 
 export const Home = () => {
   return (

@@ -12,7 +12,7 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
-    "autoprefixer": "10.4.14",
+    "autoprefixer": "^10.4.14",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
     "next": "13.4.4",
@@ -22,9 +22,11 @@
     "tailwindcss": "3.3.2",
     "three": "^0.152.2",
     "three.meshline": "^1.4.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "webpack": "^5.87.0"
   },
   "devDependencies": {
-    "@types/three": "^0.152.1"
+    "@types/three": "^0.152.1",
+    "css-loader": "^6.8.1"
   }
 }
