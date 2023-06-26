@@ -41,18 +41,18 @@ const Three = () => {
         elem.scale.z=elem.scale.z>aniMin?elem.scale.z-(elem.scale.z-aniMin)*ani:aniMin;
       }
     });
-  },[tw, ani]);
+  },[]);
 
   const onWheel = useCallback(( event:WheelEvent ) => {
     ani=0;
     tw = Math.max(1/10, Math.min(tw+event.deltaY/200, (5*5-4)/10));
-  },[tw]);
+  },[]);
 
   const onPointerMove = useCallback(( event:PointerEvent ) => {
     const x = (event.clientX/window.innerWidth)*2-1;
     const y = - (event.clientY/window.innerHeight)*2+1;
     setPointer((p)=>{p.set(x, y); return p;})
-  },[pointer]);
+  },[]);
 
   const onClick = useCallback((event:Event)=>{
     ani=0;

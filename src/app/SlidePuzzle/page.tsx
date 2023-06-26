@@ -1,6 +1,6 @@
-import Navigation from "@/components/NavBar";
+import Navigation from "@/components/SideBar";
 
-export const Home = () => {
+const SlidePuzzle = () => {
   return (
     <main className="">
       Slide Puzzle
@@ -10,4 +10,4 @@ export const Home = () => {
   
 };
 
-export default Home;
+export default SlidePuzzle;

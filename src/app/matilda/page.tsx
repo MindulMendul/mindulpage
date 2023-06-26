@@ -1,13 +1,11 @@
-import Navigation from "@/components/NavBar";
+import SideBar from "@/components/SideBar";
 
-export const Home = () => {
+const Matilda = () => {
   return (
     <main className="">
-      Matilda
-      <Navigation/>
+      <SideBar/>
     </main>
   );
-  
 };
 
-export default Home;
+export default Matilda;

@@ -1,6 +1,6 @@
-import Navigation from "@/components/NavBar";
+import Navigation from "@/components/SideBar";
 
-export const Home = () => {
+const VI828583 = () => {
   return (
     <main className="">
       VI-828583
@@ -10,4 +10,4 @@ export const Home = () => {
   
 };
 
-export default Home;
+export default VI828583;
