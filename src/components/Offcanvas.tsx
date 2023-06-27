@@ -4,7 +4,7 @@ import { Drawer } from "@material-tailwind/react";
 import { useState } from "react";
 
 type OffcanvasButtonProps = {
-  href: string,
+  href: string
   title: string
 }
 
