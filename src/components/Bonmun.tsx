@@ -5,7 +5,7 @@ type Bonmun = {
 
 const Bonmun = ({children, title}:any) => {
   return (
-    <div className="mb-12">
+    <div id={title} className="pt-12 pb-6">
       <h1 className="mb-4 text-2xl font-extrabold tracking-tight leading-none text-black md:text-3xl lg:text-4xl">
         {title}
       </h1>

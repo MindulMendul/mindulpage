@@ -1,8 +1,8 @@
-import Navigation from "@/components/SideBar";
+import Navigation from "@/components/Offcanvas";
 
 const ForStudy = () => {
   return (
-    <main className="">
+    <main className="relative">
       for Study
       <Navigation />
     </main>

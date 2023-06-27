@@ -1,8 +1,8 @@
-import SideBar from "@/components/SideBar";
+import SideBar from "@/components/Offcanvas";
 
 const Matilda = () => {
   return (
-    <main className="">
+    <main className="relative">
       <SideBar/>
     </main>
   );

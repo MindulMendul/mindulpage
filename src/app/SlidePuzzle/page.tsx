@@ -1,8 +1,8 @@
-import Navigation from "@/components/SideBar";
+import Navigation from "@/components/Offcanvas";
 
 const SlidePuzzle = () => {
   return (
-    <main className="">
+    <main className="relative">
       Slide Puzzle
       <Navigation />
     </main>

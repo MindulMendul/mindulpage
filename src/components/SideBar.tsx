@@ -1,51 +1,30 @@
-"use client"
-
-import { Drawer } from "@material-tailwind/react";
-import { useState } from "react";
-
-type SideBarButtonProps = {
+type SidebarButtonProps = {
   href: string,
-  title: string
+  title: string,
 }
 
-const SideBarButton = (props: SideBarButtonProps) => {
+const SidebarButton = (props: SidebarButtonProps) => {
   const {href, title} = props;
   return (
-    <a href={href} className="flex text-sm sm:text-lg md:text-2xl items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+    <a href={href} className="flex items-center px-3 py-1 text-gray-900 dark:text-white hover:font-bold">
       <span className="ml-3 text-bold">{title}</span>
     </a>
   );
 }
 
-const SideBar = () => {
-  const [open, setOpen] = useState(false);
-  const openDrawer = () => setOpen(true);
-  const closeDrawer = () => setOpen(false);
-
+const Sidebar = () => {
   return (
-    <>
-      <div className="fixed top-0 right-0 m-2 p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" onClick={openDrawer} typeof="btn">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
+    <aside id="Sidebar" className="fixed right-0 md:right-24 lg:right-12 xl:right-24 top-1/4 h-min my-4 transition-transform sm:translate-x-0 translate-x-full" aria-label="Sidebar">
+      <div className="h-min overflow-y-auto">
+          <ul className="space-y-2 font-medium">
+            <li><SidebarButton href={"#사용법"} title={"사용법"} /></li>
+            <li><SidebarButton href={"#명령어"} title={"명령어"} /></li>
+            <li><SidebarButton href={"#노래명령어"} title={"노래명령어"} /></li>
+            <li><SidebarButton href={"#개발환경"} title={"개발환경"} /></li>
+          </ul>
       </div>
-      <Drawer placement="right" open={open} onClose={closeDrawer} className="bg-blue-100">
-        <div className="fixed top-0 m-2 p-2 text-sm text-gray-900 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" onClick={closeDrawer} typeof="btn">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </div>
-        <ul className="space-y-2 font-medium pt-24">
-          <li><SideBarButton href={"/"} title={"Home"} /></li>
-          <li><SideBarButton href={"/mindulbot"} title={"MindulBot"}/></li>
-          <li><SideBarButton href={"/matilda"} title={"Matilda"}/></li>
-          <li><SideBarButton href={"/vi828583"} title={"vi-828583"} /></li>
-          <li><SideBarButton href={"/slidepuzzle"} title={"Slide Puzzle"} /></li>
-          <li><SideBarButton href={"/forstudy"} title={"Study"} /></li>
-        </ul>
-      </Drawer>
-    </>
+    </aside>
   );
 }
 
-export default SideBar;
+export default Sidebar;
