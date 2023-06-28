@@ -16,7 +16,8 @@ let tw = 0.1;
 const _pointer = new THREE.Vector2(-100, -100);
 let ball:any = null;
 let ss: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial>[] = [];
-let ani = 0; const aniMax=2, aniMin=1;
+let ani = 0; let aniMax=2, aniMin=1;
+let animationId:number;
 
 const Three = () => {
   const router = useRouter();
@@ -40,18 +41,18 @@ const Three = () => {
         elem.scale.z=elem.scale.z>aniMin?elem.scale.z-(elem.scale.z-aniMin)*ani:aniMin;
       }
     });
-  },[tw]);
+  },[]);
 
   const onWheel = useCallback(( event:WheelEvent ) => {
     ani=0;
     tw = Math.max(1/10, Math.min(tw+event.deltaY/200, (5*5-4)/10));
-  },[tw]);
+  },[]);
 
   const onPointerMove = useCallback(( event:PointerEvent ) => {
     const x = (event.clientX/window.innerWidth)*2-1;
     const y = - (event.clientY/window.innerHeight)*2+1;
     setPointer((p)=>{p.set(x, y); return p;})
-  },[pointer]);
+  },[]);
 
   const onClick = useCallback((event:Event)=>{
     ani=0;
@@ -66,22 +67,23 @@ const Three = () => {
       const i=ss.findIndex((e)=>(e.uuid==intersect.object.uuid));
       console.log(Math.abs(0.2*(tw*10-1)-i));
       if(Math.abs(0.2*(tw*10-1)-i)<0.001){
-        router.replace("/"+sections[i]);
+        window.removeEventListener("pointermove", onPointerMove);
+        window.removeEventListener("click", onClick);
+        window.removeEventListener("wheel", onWheel);
+        ani=0; aniMax=30; aniMin=0;
       }
       tw = (5*i+1)/10;
     }
-  }, [raycaster])
+  }, [raycaster]);
 
   useEffect(() => {
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('click', onClick);
     window.addEventListener("wheel", onWheel);
-    console.log("qwer");
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointermove", onClick);
+      window.removeEventListener("click", onClick);
       window.removeEventListener("wheel", onWheel);
-      console.log("asdf");
     };
   });
 
@@ -93,16 +95,23 @@ const Three = () => {
 
   useEffect(() => {
     if (canvasRef.current) {
-      const _renderer = new THREE.WebGLRenderer({canvas: canvasRef.current});
+      const _renderer = new THREE.WebGLRenderer({canvas: canvasRef.current, antialias: true});
       setRenderer(_renderer);
     }
+    return;
   }, [canvasRef]);
 
   useEffect(()=>{
-    const animate = () => {
-      cw=(Math.abs(cw-tw)>0.0001)?cw+0.02*(tw-cw):tw;
-      if(ani<1) ani+=0.001;
-
+    const animate = ()=>{
+      if(animationId) window.cancelAnimationFrame(animationId);
+      cw=(Math.abs(cw-tw)>0.0001)?cw+0.05*(tw-cw):tw;
+      if(ani<1) ani+=0.002;
+      
+      if(aniMax>10 && ani>0.1) {
+        router.push("/"+sections[Math.round(0.2*(tw*10-1))]);
+        ani=0; aniMax=2; aniMin=1;
+      }
+  
       const {x, y, z} = witch(5, 4, cw);
       setCurVector((curVector)=>{curVector.set(x, y, z); return curVector});
       setLookAtVector((lookAtVector)=>{lookAtVector.set(0, 0, z); return lookAtVector});
@@ -112,14 +121,14 @@ const Three = () => {
       camera.lookAt(lookAtVector);
       
       raycaster.setFromCamera( pointer, camera );
-
+  
       setSectionSize(tw, ani);
-
+  
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.render( scene, camera );
-      window.requestAnimationFrame(animate);
-    };
 
+      animationId=window.requestAnimationFrame(animate);
+    };
     animate();
   }, [renderer]);
 
