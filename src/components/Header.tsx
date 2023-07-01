@@ -3,7 +3,7 @@ type HeaderProps = {
   dir?:string
 }
 
-export const Header = (props:HeaderProps) => {
+const Header = (props:HeaderProps) => {
   const {dir, title}=props;
   return (
     <section className={`bg-blue-300 bg-blend-multiply ${dir?`${dir} bg-center sm:bg-[100px] lg:bg-[200px] xl:bg-[300px] bg-contain bg-no-repeat`:``}`}>

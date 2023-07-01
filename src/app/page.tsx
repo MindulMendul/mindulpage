@@ -1,9 +1,9 @@
-import Three from "../components/three";
+import ThreeCanvas from "@/components/ThreeCanvas";
 
-export const Home = () => {
+const Home = () => {
   return (
     <main className="home">
-      <Three/>
+      <ThreeCanvas/>
     </main>
   );
 }

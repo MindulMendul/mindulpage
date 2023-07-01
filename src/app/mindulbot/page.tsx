@@ -1,8 +1,9 @@
 import Bonmun from "@/components/Bonmun";
-import Button from "@/components/Button";
 import Header from "@/components/Header";
-import Sidebar, { SidebarButton } from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import Offcanvas from "@/components/Offcanvas";
+import RouteButton from "@/components/RouteButton";
+import SidebarButton from "@/components/SidebarButton";
 
 const MindulBot = () => {
   const _dir="bg-[url('/img/mindul.png')]";
@@ -30,7 +31,7 @@ const MindulBot = () => {
         <Bonmun title="사용법">
           민둘봇은 디스코드 방에 초대해야만 사용가능합니다!<br/>
           해당 링크에 들어가서 원하는 디스코드 방에 초대할 수 있습니다.<br/><br/>
-          <Button title={"민둘봇 초대하기"} dir={"https://discord.com/oauth2/authorize?client_id=751733763838443530&scope=bot"}/><br/>
+          <RouteButton dir={"https://discord.com/oauth2/authorize?client_id=751733763838443530&scope=bot"}>민둘봇 초대하기</RouteButton><br/>
         </Bonmun>
 
         <Bonmun title="명령어">

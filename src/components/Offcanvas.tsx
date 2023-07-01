@@ -41,7 +41,7 @@ const Offcanvas = () => {
           <li><OffcanvasButton href={"/matilda"} title={"Matilda"}/></li>
           <li><OffcanvasButton href={"/vi828583"} title={"vi-828583"} /></li>
           <li><OffcanvasButton href={"/slidepuzzle"} title={"Slide Puzzle"} /></li>
-          <li><OffcanvasButton href={"/forstudy"} title={"Study"} /></li>
+          <li><OffcanvasButton href={"/study"} title={"Study"} /></li>
         </ul>
       </Drawer>
     </>
