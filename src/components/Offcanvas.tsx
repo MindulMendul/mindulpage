@@ -37,11 +37,11 @@ const Offcanvas = () => {
         </div>
         <ul className="space-y-2 font-medium pt-24">
           <li><OffcanvasButton href={"/"} title={"Home"} /></li>
-          <li><OffcanvasButton href={"/mindulbot"} title={"MindulBot"}/></li>
-          <li><OffcanvasButton href={"/matilda"} title={"Matilda"}/></li>
+          <li><OffcanvasButton href={"/mindulbot"} title={"MindulBot"} /></li>
+          <li><OffcanvasButton href={"/matilda"} title={"Matilda"} /></li>
           <li><OffcanvasButton href={"/vi828583"} title={"vi-828583"} /></li>
           <li><OffcanvasButton href={"/slidepuzzle"} title={"Slide Puzzle"} /></li>
-          <li><OffcanvasButton href={"/study"} title={"Study"} /></li>
+          <li><OffcanvasButton href={"/codingtest"} title={"Coding Test"} /></li>
         </ul>
       </Drawer>
     </>
