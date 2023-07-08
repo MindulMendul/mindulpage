@@ -32,8 +32,8 @@ export const loadModel = (scene: THREE.Scene, locVector: any) => {
 }
 
 export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
-  const geometrySphere = new THREE.SphereGeometry(0.1, 16, 16);
-  const materialSphere = new THREE.MeshBasicMaterial({ color: 0xFF00FF });
+  const geometrySphere = new THREE.SphereGeometry(0.3, 16, 16);
+  const materialSphere = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
   const sphere = new THREE.Mesh(geometrySphere, materialSphere);
   sphere.position.set(locVector.x, locVector.y, locVector.z);
   scene.add(sphere);
@@ -44,7 +44,7 @@ export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
 export const loadCube = (scene: THREE.Scene, locVector: THREE.Vector3, i: number, name: string) => {
   const edgeLen = 1;
   const geometry = new THREE.BoxGeometry(edgeLen, edgeLen, edgeLen);
-  const material = new THREE.MeshBasicMaterial({ color: HSVtoRGB(i * 20, 1, 1) });
+  const material = new THREE.MeshPhongMaterial({ color: HSVtoRGB(i * 20, 1, 1) });
   const cube = new THREE.Mesh(geometry, material);
   cube.position.set(locVector.x, locVector.y, locVector.z);
   cube.name = name;
@@ -63,24 +63,46 @@ export const loadLine = (scene: THREE.Scene, points: Array<any>, linewidth: numb
   return line;
 }
 
-export const loadGround = (scene: THREE.Scene, locVector: any) => {
+export const loadGround = (scene: THREE.Scene, locVector: THREE.Vector3, width:number, texture?: string) => {
   const textureLoader = new THREE.TextureLoader();
 
   //ground
   const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(10, 10),
-    new THREE.MeshStandardMaterial({
-      map: textureLoader.load(`./test/Mindullormoon.png`)
+    new THREE.PlaneGeometry(width, width),
+    new THREE.MeshPhongMaterial({
+      map: textureLoader.load(texture?texture:`./test/texture1.png`)
     })
   );
-  ground.rotateX(0.5 * Math.PI);
+  ground.rotateX(-0.5 * Math.PI);
   ground.position.set(locVector.x, locVector.y, locVector.z);
   scene.add(ground);
 
   return ground;
 }
 
-export const loadText = (scene:THREE.Scene, locVector: any, text:string) => {
+export const loadLight = (scene: THREE.Scene) => {
+  const color = 0xFFFFFF;
+  const intensity = 0.1;
+  const light = new THREE.AmbientLight(color, intensity);
+  scene.add(light);
+
+  return light;
+}
+
+export const loadSpotLight = (scene: THREE.Scene, locVector: THREE.Vector3, targetVector: THREE.Vector3) => {
+  const color = 0xFFFFFF;
+  const intensity = 0.5;
+  const light = new THREE.SpotLight(color, intensity);
+  light.angle=Math.PI/6;
+  light.position.set(locVector.x, locVector.y, locVector.z);
+  light.target.position.set(targetVector.x, targetVector.y, targetVector.z);
+  scene.add(light);
+  scene.add(light.target);
+
+  return light;
+}
+
+export const loadText = (scene:THREE.Scene, locVector: THREE.Vector3, text:string) => {
   const fontLoader = new FontLoader();
   const font = fontLoader.parse(ttf);
   const geometry = new TextGeometry(text, { 
@@ -95,7 +117,7 @@ export const loadText = (scene:THREE.Scene, locVector: any, text:string) => {
     bevelSegments: 0.3
   });
 
-  const material = new THREE.MeshBasicMaterial({
+  const material = new THREE.MeshPhongMaterial({
     color: 0xffffff, 
     wireframe: true
   });

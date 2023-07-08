@@ -8,9 +8,10 @@ import SidebarButton from "@/components/SidebarButton";
 const Home = () => {
   const _dir=`bg-[url(/img/matilda.png)]`;
   return (
-    <main className="relative min-h-screen">
-      <Header title={"MindulPage"}/>
+    <main id="home" className="relative min-h-screen">
       <Offcanvas />
+      {/* <Header title={"MindulPage"}/>
+      
       <Sidebar>
         <SidebarButton title={"민둘페이지"} />
         <SidebarButton title={"목차"} />
@@ -19,9 +20,9 @@ const Home = () => {
         <SidebarButton title={"VI-828583"} />
         <SidebarButton title={"슬라이드퍼즐"} />
         <SidebarButton title={"코테공부자료"} />
-      </Sidebar>
+      </Sidebar> */}
       
-      <div className="p-4 sm:mr-32 2xl:mx-48 md:px-24 lg:px-36 xl:px-60 py-6 px-6">
+      {/* <div className="p-4 sm:mr-32 2xl:mx-48 md:px-24 lg:px-36 xl:px-60 py-6 px-6">
         <Bonmun title="민둘페이지">
           이곳은 민둘페이지입니다.<br/>
           민둘이가 제작한 프로젝트를 소개하는 페이지입니다.<br/>
@@ -65,8 +66,8 @@ const Home = () => {
           코딩테스트 공부했던 자료를 보여줍니다.
         </Bonmun>
         
-      </div>
-      {/* <ThreeCanvas/> */}
+      </div> */}
+      <ThreeCanvas/>
     </main>
   );
 };

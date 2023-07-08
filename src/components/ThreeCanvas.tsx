@@ -5,20 +5,23 @@ import React, { useEffect, useRef } from "react";
 import { drawBall, drawSections } from '@/util/draw';
 import { witch } from '@/util/witch';
 import { useRouter } from 'next/navigation';
-import { WebGLRenderer } from 'three';
+import { Vector3, WebGLRenderer } from 'three';
+import { loadGround, loadLight } from '@/util/loader';
 
 const lookAtVector = new THREE.Vector3(0, 0, 0.1);
 const curVector = new THREE.Vector3(0.1, 0, 0.1);
 const pointer = new THREE.Vector2(-100, -100);
 
-let cw = 0;
-let tw = 0.1;
+const twStart=-5;
+let cw = twStart;
+let tw = twStart;
 let ball:any = null;
-let ss: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial>[] = [];
+let ss: any[] = [];
 let ani = 0; let aniMax=2, aniMin=1;
+let anix = 0.005;
 let animationId:number;
 
-const sections = ["mindulbot", "matilda", "slidepuzzle", "vi828583", "study"];
+const sections = ["mindulbot", "matilda", "slidepuzzle", "vi828583", "codingtest"];
 const horizontalRadius = 5;
 const verticalRadius = 4;
 const zRadius = 40;
@@ -28,7 +31,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(30, 1, 0.001, 2000);
 const raycaster = new THREE.Raycaster();
 let renderer:WebGLRenderer;
-scene.background = new THREE.Color(0x000A2B);
+scene.background = new THREE.Color(0x000000);//0x000A2B
 camera.position.set(0, zRadius*Math.sin(zTheta), zRadius*Math.cos(zTheta));
 
 const ThreeCanvas = () => {
@@ -50,11 +53,15 @@ const ThreeCanvas = () => {
     scene.clear();
     ss=drawSections(scene, sections, horizontalRadius, verticalRadius);
     ball=drawBall(scene);
+    loadGround(scene, new Vector3(-13, -1, 3), 60, `./test/Mindullormoon.png`);
+    loadLight(scene);
   },[]);
 
   useEffect(() => {
     if (canvasRef.current) {
       renderer = new THREE.WebGLRenderer({canvas: canvasRef.current, antialias: true});
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFShadowMap;
     }
     return;
   }, [canvasRef]);
@@ -69,18 +76,19 @@ const ThreeCanvas = () => {
         router.push("/"+sections[Math.round(0.2*(tw*10-1))]);
         ani=0; aniMax=2; aniMin=1;
       }
-  
+
       const {x, y, z} = witch(5, 4, cw);
       curVector.set(x, y, z);
-      lookAtVector.set(0, 0, z);
+      lookAtVector.set(cw>0.1?0:x, 0, z);
       
       ball.position.set(curVector.x, curVector.y, curVector.z);
-      camera.position.set(0, zRadius*Math.sin(zTheta), zRadius*Math.cos(zTheta)+curVector.z);
+      camera.position.set(cw>0.1?0:x, zRadius*Math.sin(zTheta), zRadius*Math.cos(zTheta)+curVector.z);
       camera.lookAt(lookAtVector);
       
       raycaster.setFromCamera( pointer, camera );
   
-      setSectionSize(tw, ani);
+      setSectionSize();
+      setSectionAnimate();
   
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.render( scene, camera );
@@ -97,7 +105,7 @@ const ThreeCanvas = () => {
 
 export default ThreeCanvas;
 
-const setSectionSize = (tw:number, ani: number) => {
+const setSectionSize = () => {
   ss.forEach((elem, i)=>{
     if(Math.abs(0.2*(tw*10-1)-i)<0.001){
       elem.scale.x=elem.scale.x<aniMax?elem.scale.x+(aniMax-elem.scale.x)*ani:aniMax;
@@ -111,9 +119,20 @@ const setSectionSize = (tw:number, ani: number) => {
   });
 };
 
+const setSectionAnimate = () => {
+  ss.forEach((elem)=>{
+    elem.rotateY(anix);
+  });
+};
+
 const onWheel = ( event:WheelEvent ) => {
   ani=0;
-  tw = Math.max(1/10, Math.min(tw+event.deltaY/200, (5*5-4)/10));
+  if(tw>0){
+    tw = Math.max(-0.4, Math.min(tw+event.deltaY/200, (5*ss.length-4)/10));
+    if(tw<0) tw=twStart;
+  } else {
+    tw = Math.max(twStart, Math.min(tw+event.deltaY, 0.1));
+  }
 };
 
 const onPointerMove = ( event:PointerEvent ) => {
