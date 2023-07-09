@@ -22,17 +22,17 @@ const drawLine = (scene: THREE.Scene, N: number, horizontalRadius: number, verti
 }
 
 const drawSection = (scene: THREE.Scene, locVector: THREE.Vector3, index: number, name:string) => {
-  const height = 3;
+  const height = 6;
 
   loadLine(scene, [locVector.x, locVector.y, locVector.z, locVector.x, locVector.y + height, locVector.z], 0.003);
   const vecCube = new THREE.Vector3(locVector.x, locVector.y + height, locVector.z);
   const vecText = new THREE.Vector3(locVector.x, locVector.y + 1.5*height, locVector.z);
   const vecLight = new THREE.Vector3(locVector.x, locVector.y + 3*height, locVector.z);
   
-  const res = loadCube(scene, vecCube, index, name );
-  loadText(scene, vecText, name);
-  loadSpotLight(scene, vecLight, vecCube);
-  return res;
+  const cube = loadCube(scene, vecCube, index, name );
+  loadText(scene, vecText, 1, name);
+  const light = loadSpotLight(scene, vecLight, vecCube);
+  return [cube, light];
 }
 
 export const drawSections = (scene: THREE.Scene, sections: string[], horizontalRadius: number, verticalRadius: number) => {

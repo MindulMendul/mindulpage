@@ -8,6 +8,7 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { HSVtoRGB } from './color';
 
 import ttf from '@/fonts/helvetiker_regular.typeface.json';
+import ttf_kr from '@/fonts/Do Hyeon_Regular.json';
 
 export const loadModel = (scene: THREE.Scene, locVector: any) => {
   const loader = new GLTFLoader();
@@ -33,7 +34,7 @@ export const loadModel = (scene: THREE.Scene, locVector: any) => {
 
 export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
   const geometrySphere = new THREE.SphereGeometry(0.3, 16, 16);
-  const materialSphere = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
+  const materialSphere = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
   const sphere = new THREE.Mesh(geometrySphere, materialSphere);
   sphere.position.set(locVector.x, locVector.y, locVector.z);
   scene.add(sphere);
@@ -42,7 +43,7 @@ export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
 }
 
 export const loadCube = (scene: THREE.Scene, locVector: THREE.Vector3, i: number, name: string) => {
-  const edgeLen = 1;
+  const edgeLen = 2.5;
   const geometry = new THREE.BoxGeometry(edgeLen, edgeLen, edgeLen);
   const material = new THREE.MeshPhongMaterial({ color: HSVtoRGB(i * 20, 1, 1) });
   const cube = new THREE.Mesh(geometry, material);
@@ -82,7 +83,7 @@ export const loadGround = (scene: THREE.Scene, locVector: THREE.Vector3, width:n
 
 export const loadLight = (scene: THREE.Scene) => {
   const color = 0xFFFFFF;
-  const intensity = 0.1;
+  const intensity = 0.05;
   const light = new THREE.AmbientLight(color, intensity);
   scene.add(light);
 
@@ -91,9 +92,9 @@ export const loadLight = (scene: THREE.Scene) => {
 
 export const loadSpotLight = (scene: THREE.Scene, locVector: THREE.Vector3, targetVector: THREE.Vector3) => {
   const color = 0xFFFFFF;
-  const intensity = 0.5;
+  const intensity = 0.1;
   const light = new THREE.SpotLight(color, intensity);
-  light.angle=Math.PI/6;
+  light.angle=Math.PI/8;
   light.position.set(locVector.x, locVector.y, locVector.z);
   light.target.position.set(targetVector.x, targetVector.y, targetVector.z);
   scene.add(light);
@@ -102,12 +103,12 @@ export const loadSpotLight = (scene: THREE.Scene, locVector: THREE.Vector3, targ
   return light;
 }
 
-export const loadText = (scene:THREE.Scene, locVector: THREE.Vector3, text:string) => {
+export const loadText = (scene:THREE.Scene, locVector: THREE.Vector3, size:number, text:string) => {
   const fontLoader = new FontLoader();
   const font = fontLoader.parse(ttf);
   const geometry = new TextGeometry(text, { 
     font: font,
-    size: 1,
+    size: size,
     height: 0.1,
     curveSegments: 12,
     bevelEnabled: false,
@@ -117,7 +118,7 @@ export const loadText = (scene:THREE.Scene, locVector: THREE.Vector3, text:strin
     bevelSegments: 0.3
   });
 
-  const material = new THREE.MeshPhongMaterial({
+  const material = new THREE.MeshBasicMaterial({
     color: 0xffffff, 
     wireframe: true
   });
@@ -131,4 +132,39 @@ export const loadText = (scene:THREE.Scene, locVector: THREE.Vector3, text:strin
   mesh.position.set(locVector.x-measure.x/2, locVector.y, locVector.z);
   mesh.rotateX(-Math.PI/6);
   scene.add(mesh);
+
+  return mesh;
+}
+
+export const loadTextKR = (scene:THREE.Scene, locVector: THREE.Vector3, size:number, text:string) => {
+  const fontLoader = new FontLoader();
+  const font = fontLoader.parse(ttf_kr);
+  const geometry = new TextGeometry(text, { 
+    font: font,
+    size: size,
+    height: 0.1,
+    curveSegments: 12,
+    bevelEnabled: false,
+    bevelThickness: 0,
+    bevelSize: 0.8,
+    bevelOffset: 0,
+    bevelSegments: 0.3
+  });
+
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xffffff, 
+    wireframe: true
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+
+  const measureBox = new THREE.Box3().setFromObject(mesh);
+  const measure = new THREE.Vector3();
+  measureBox.getSize(measure);
+  
+  mesh.position.set(locVector.x-measure.x/2, locVector.y, locVector.z);
+  mesh.rotateX(-Math.PI/6);
+  scene.add(mesh);
+
+  return mesh;
 } 
