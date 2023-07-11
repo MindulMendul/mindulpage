@@ -1,29 +1,26 @@
 "use client"
 
-import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube"
+import ReactPlayer from 'react-player/youtube'
 
 type YoutubeProps = {
   videoId:string
 }
 
 const Youtube = (props: YoutubeProps) => {
-  const {videoId} = props;
+  const { videoId } = props;
 
-  const onPlayerReady: YouTubeProps['onReady'] = (event) => {
-    event.target.pauseVideo();
-  }
-
-  const onPlayerEnd = (e:YouTubeEvent<number>)=>{ e.target.stopVideo(0);}
-
-  const opts: YouTubeProps['opts'] = {
-    height: '390',
-    width: '640',
-    playerVars: {
-      autoplay: 0,
-    },
-  };
-
-  return <YouTube videoId={videoId} opts={opts} onReady={onPlayerReady} onEnd={onPlayerEnd}/>;
+  return (
+    <div className='player-wrapper relative xl:w-3/4 lg:w-[600px] sm:w-[480px] xs:w-100'>
+      {window?
+      <ReactPlayer
+        className='react-player absolute'
+        url={`https://www.youtube.com/watch?v=${videoId}`}
+        width='100%'
+        height='100%'
+      />
+      :undefined}
+    </div>
+  )
 }
 
 export default Youtube;

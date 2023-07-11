@@ -43,7 +43,7 @@ export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
 }
 
 export const loadCube = (scene: THREE.Scene, locVector: THREE.Vector3, i: number, name: string) => {
-  const edgeLen = 2.5;
+  const edgeLen = 2;
   const geometry = new THREE.BoxGeometry(edgeLen, edgeLen, edgeLen);
   const material = new THREE.MeshPhongMaterial({ color: HSVtoRGB(i * 20, 1, 1) });
   const cube = new THREE.Mesh(geometry, material);
@@ -94,7 +94,7 @@ export const loadSpotLight = (scene: THREE.Scene, locVector: THREE.Vector3, targ
   const color = 0xFFFFFF;
   const intensity = 0.1;
   const light = new THREE.SpotLight(color, intensity);
-  light.angle=Math.PI/8;
+  light.angle=Math.PI/10;
   light.position.set(locVector.x, locVector.y, locVector.z);
   light.target.position.set(targetVector.x, targetVector.y, targetVector.z);
   scene.add(light);

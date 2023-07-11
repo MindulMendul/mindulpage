@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Offcanvas from "@/components/Offcanvas";
 import SidebarButton from "@/components/SidebarButton";
+import RouteButton from "@/components/RouteButton";
 
 const VI828583 = () => {
   const _dir=`bg-[url(/img/matilda.png)]`;
@@ -20,7 +21,8 @@ const VI828583 = () => {
         <Bonmun title="VI-828583">
           해당 프로젝트는 한국 게임메이커 커뮤니티 KGMC에서 주최했던, [제 6회 CGM 게임잼] 출품작입니다.<br/>
           2D 디펜스게임으로 제작되었으며, 스테이지 5단계를 모두 클리어하면 승리하는 게임입니다.<br/>
-          플레이시간은 20분 전후로 예상하고, 조금 어려울 것으로 예상합니다.
+          플레이시간은 20분 전후로 예상하고, 조금 어려울 것으로 예상합니다.<br/><br/>
+          <RouteButton dir={"https://github.com/MindulMendul/VI828583"}>소스코드 보기</RouteButton><br/>
         </Bonmun>
 
         <Bonmun title="조작법">

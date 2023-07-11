@@ -17,11 +17,11 @@ let cw = twStart;
 let tw = twStart;
 let ball:any = null;
 let ss: any[] = [];
-let ani = 0; let aniMax=2, aniMin=1;
-let anix = 0.005;
+let ani=0, aniMax=2, aniMin=1; // 전반적인 애니메이션에 쓰이는 변수
+let anix=0.005; //큐브 도는 속도
 let animationId:number;
-let swipeX=0;
-let canSwipe=0;
+let swipeX=0, swipeY=0; // 스와이프에 사용되는 변수 1
+let canSwipe=0, swipeTW=0.1; // 스와이프에 사용되는 변수 2
 
 const sections = ["mindulbot", "matilda", "slidepuzzle", "vi828583", "codingtest"];
 const horizontalRadius = 8;
@@ -140,16 +140,33 @@ const setSectionAnimate = () => {
 
 const onTouchStart = ( event:TouchEvent ) => {
   swipeX=event.targetTouches[0].clientX;
+  swipeY=event.targetTouches[0].clientY;
 }
 
 const onTouch = ( event:TouchEvent ) => {
-  if(event.targetTouches[0].clientX-swipeX>100) canSwipe=1;
-  if(swipeX-event.targetTouches[0].clientX>100) canSwipe=-1;
+  const sensitivityX=window.innerWidth/3, sensitivityY=window.innerHeight/3;
+  if(event.targetTouches[0].clientX-swipeX>sensitivityX) {
+    canSwipe=-1; swipeTW=tw;
+  }
+  else if(swipeX-event.targetTouches[0].clientX>sensitivityX) {
+    canSwipe=1;
+  }
+  else if(swipeY-event.targetTouches[0].clientY>sensitivityY) {
+    ani=0;
+    swipeY-=sensitivityY;
+    tw=tw>0?Math.min(ss.length*0.5-0.4, tw+0.5):0.1;
+  }
+  else if(event.targetTouches[0].clientY-swipeY>sensitivityY) {
+    ani=0;
+    swipeY+=sensitivityY;
+    tw=tw=tw>0.1?Math.max(0.1, tw-0.5):twStart;
+  }
 }
 
 const onTouchEnd = ( event:TouchEvent ) => {
-  if(canSwipe==1) tw=twStart;
-  if(canSwipe==-1) tw=0.1;
+  ani=0;
+  if(canSwipe==-1) tw=twStart;
+  if(canSwipe==1) tw=swipeTW;
   canSwipe=0;
 }
 
@@ -187,6 +204,9 @@ const onClick = (event:Event) => {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("click", onClick);
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
       ani=0; aniMax=30; aniMin=0;
     }
     tw = (5*i+1)/10;

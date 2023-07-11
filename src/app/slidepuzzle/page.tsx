@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Offcanvas from "@/components/Offcanvas";
 import SidebarButton from "@/components/SidebarButton";
+import RouteButton from "@/components/RouteButton";
 
 const SlidePuzzle = () => {
   const _dir=`bg-[url(/img/matilda.png)]`;
@@ -22,8 +23,8 @@ const SlidePuzzle = () => {
           2021년도 MicroProcessor 응용실습 수업 최종 과제 자료입니다.<br/>
           1인 과제로 슬라이드 퍼즐을 제작했습니다.<br/>
           해당 프로젝트는 C와 JAVA를 이용해 개발했으며, C를 이용해 GPU 가속을 통한 퍼즐 제작, JAVA를 이용해 애플리케이션 개발을 담당했습니다.<br/>
-          그리고 이를 JNI를 이용해 C로부터 계산된 퍼즐의 정보를 JAVA로 넘겨 애플리케이션 화면에 띄워줄 수 있도록 구현했습니다.<br/>
-          <a href="https://github.com/MindulMendul/SlidePuzzle">https://github.com/MindulMendul/SlidePuzzle</a>
+          그리고 이를 JNI를 이용해 C로부터 계산된 퍼즐의 정보를 JAVA로 넘겨 애플리케이션 화면에 띄워줄 수 있도록 구현했습니다.<br/><br/>
+          <RouteButton dir={"https://github.com/MindulMendul/SlidePuzzle"}>소스코드 보기</RouteButton><br/>
         </Bonmun>
         <Bonmun title="실행방식">
           프로그램의 실행방식은 다음과 같습니다.<br/><br/>
