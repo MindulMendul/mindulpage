@@ -11,7 +11,7 @@ const Youtube = (props: YoutubeProps) => {
 
   return (
     <div className='player-wrapper relative xl:w-3/4 lg:w-[600px] sm:w-[480px] xs:w-100'>
-      {window?
+      {(typeof window)?
       <ReactPlayer
         className='react-player absolute'
         url={`https://www.youtube.com/watch?v=${videoId}`}
