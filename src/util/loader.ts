@@ -8,6 +8,7 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { HSVtoRGB } from './color';
 
 import ttf from '@/fonts/helvetiker_regular.typeface.json';
+import ttf_kr from '@/fonts/Do Hyeon_Regular.json';
 
 export const loadModel = (scene: THREE.Scene, locVector: any) => {
   const loader = new GLTFLoader();
@@ -32,8 +33,8 @@ export const loadModel = (scene: THREE.Scene, locVector: any) => {
 }
 
 export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
-  const geometrySphere = new THREE.SphereGeometry(0.1, 16, 16);
-  const materialSphere = new THREE.MeshBasicMaterial({ color: 0xFF00FF });
+  const geometrySphere = new THREE.SphereGeometry(0.3, 16, 16);
+  const materialSphere = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
   const sphere = new THREE.Mesh(geometrySphere, materialSphere);
   sphere.position.set(locVector.x, locVector.y, locVector.z);
   scene.add(sphere);
@@ -42,9 +43,9 @@ export const loadSphere = (scene: THREE.Scene, locVector: THREE.Vector3) => {
 }
 
 export const loadCube = (scene: THREE.Scene, locVector: THREE.Vector3, i: number, name: string) => {
-  const edgeLen = 1;
+  const edgeLen = 2;
   const geometry = new THREE.BoxGeometry(edgeLen, edgeLen, edgeLen);
-  const material = new THREE.MeshBasicMaterial({ color: HSVtoRGB(i * 20, 1, 1) });
+  const material = new THREE.MeshPhongMaterial({ color: HSVtoRGB(i * 20, 1, 1) });
   const cube = new THREE.Mesh(geometry, material);
   cube.position.set(locVector.x, locVector.y, locVector.z);
   cube.name = name;
@@ -63,29 +64,51 @@ export const loadLine = (scene: THREE.Scene, points: Array<any>, linewidth: numb
   return line;
 }
 
-export const loadGround = (scene: THREE.Scene, locVector: any) => {
+export const loadGround = (scene: THREE.Scene, locVector: THREE.Vector3, width:number, texture?: string) => {
   const textureLoader = new THREE.TextureLoader();
 
   //ground
   const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(10, 10),
-    new THREE.MeshStandardMaterial({
-      map: textureLoader.load(`./test/Mindullormoon.png`)
+    new THREE.PlaneGeometry(width, width),
+    new THREE.MeshPhongMaterial({
+      map: textureLoader.load(texture?texture:`./test/texture1.png`)
     })
   );
-  ground.rotateX(0.5 * Math.PI);
+  ground.rotateX(-0.5 * Math.PI);
   ground.position.set(locVector.x, locVector.y, locVector.z);
   scene.add(ground);
 
   return ground;
 }
 
-export const loadText = (scene:THREE.Scene, locVector: any, text:string) => {
+export const loadLight = (scene: THREE.Scene) => {
+  const color = 0xFFFFFF;
+  const intensity = 0.05;
+  const light = new THREE.AmbientLight(color, intensity);
+  scene.add(light);
+
+  return light;
+}
+
+export const loadSpotLight = (scene: THREE.Scene, locVector: THREE.Vector3, targetVector: THREE.Vector3) => {
+  const color = 0xFFFFFF;
+  const intensity = 0.1;
+  const light = new THREE.SpotLight(color, intensity);
+  light.angle=Math.PI/10;
+  light.position.set(locVector.x, locVector.y, locVector.z);
+  light.target.position.set(targetVector.x, targetVector.y, targetVector.z);
+  scene.add(light);
+  scene.add(light.target);
+
+  return light;
+}
+
+export const loadText = (scene:THREE.Scene, locVector: THREE.Vector3, size:number, text:string) => {
   const fontLoader = new FontLoader();
   const font = fontLoader.parse(ttf);
   const geometry = new TextGeometry(text, { 
     font: font,
-    size: 1,
+    size: size,
     height: 0.1,
     curveSegments: 12,
     bevelEnabled: false,
@@ -109,4 +132,39 @@ export const loadText = (scene:THREE.Scene, locVector: any, text:string) => {
   mesh.position.set(locVector.x-measure.x/2, locVector.y, locVector.z);
   mesh.rotateX(-Math.PI/6);
   scene.add(mesh);
+
+  return mesh;
+}
+
+export const loadTextKR = (scene:THREE.Scene, locVector: THREE.Vector3, size:number, text:string) => {
+  const fontLoader = new FontLoader();
+  const font = fontLoader.parse(ttf_kr);
+  const geometry = new TextGeometry(text, { 
+    font: font,
+    size: size,
+    height: 0.1,
+    curveSegments: 12,
+    bevelEnabled: false,
+    bevelThickness: 0,
+    bevelSize: 0.8,
+    bevelOffset: 0,
+    bevelSegments: 0.3
+  });
+
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xffffff, 
+    wireframe: true
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+
+  const measureBox = new THREE.Box3().setFromObject(mesh);
+  const measure = new THREE.Vector3();
+  measureBox.getSize(measure);
+  
+  mesh.position.set(locVector.x-measure.x/2, locVector.y, locVector.z);
+  mesh.rotateX(-Math.PI/6);
+  scene.add(mesh);
+
+  return mesh;
 } 

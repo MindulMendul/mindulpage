@@ -5,30 +5,35 @@ import React, { useEffect, useRef } from "react";
 import { drawBall, drawSections } from '@/util/draw';
 import { witch } from '@/util/witch';
 import { useRouter } from 'next/navigation';
-import { WebGLRenderer } from 'three';
+import { Vector3, WebGLRenderer } from 'three';
+import { loadGround, loadLight, loadText, loadTextKR } from '@/util/loader';
 
 const lookAtVector = new THREE.Vector3(0, 0, 0.1);
 const curVector = new THREE.Vector3(0.1, 0, 0.1);
 const pointer = new THREE.Vector2(-100, -100);
 
-let cw = 0;
-let tw = 0.1;
+const twStart=-6;
+let cw = twStart;
+let tw = twStart;
 let ball:any = null;
-let ss: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial>[] = [];
-let ani = 0; let aniMax=2, aniMin=1;
+let ss: any[] = [];
+let ani=0, aniMax=2, aniMin=1; // 전반적인 애니메이션에 쓰이는 변수
+let anix=0.005; //큐브 도는 속도
 let animationId:number;
+let swipeX=0, swipeY=0; // 스와이프에 사용되는 변수 1
+let canSwipe=0, swipeTW=0.1; // 스와이프에 사용되는 변수 2
 
-const sections = ["mindulbot", "matilda", "slidepuzzle", "vi828583", "study"];
-const horizontalRadius = 5;
-const verticalRadius = 4;
+const sections = ["mindulbot", "matilda", "slidepuzzle", "vi828583", "codingtest"];
+const horizontalRadius = 8;
+const verticalRadius = 6;
 const zRadius = 40;
-const zTheta = Math.PI/4;
+const zTheta = Math.PI/3.4;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(30, 1, 0.001, 2000);
+const camera = new THREE.PerspectiveCamera(45, 1, 1, 100);
 const raycaster = new THREE.Raycaster();
 let renderer:WebGLRenderer;
-scene.background = new THREE.Color(0x000A2B);
+scene.background = new THREE.Color(0x000000);//0x000A2B
 camera.position.set(0, zRadius*Math.sin(zTheta), zRadius*Math.cos(zTheta));
 
 const ThreeCanvas = () => {
@@ -39,10 +44,16 @@ const ThreeCanvas = () => {
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('click', onClick);
     window.addEventListener("wheel", onWheel);
+    window.addEventListener("touchstart", onTouchStart);
+    window.addEventListener("touchmove", onTouch);
+    window.addEventListener("touchend", onTouchEnd);
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("click", onClick);
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
     };
   });
 
@@ -50,11 +61,17 @@ const ThreeCanvas = () => {
     scene.clear();
     ss=drawSections(scene, sections, horizontalRadius, verticalRadius);
     ball=drawBall(scene);
+    loadGround(scene, new Vector3(-25, -1, 3), 100, `./test/Mindullormoon.png`);//
+    loadLight(scene);
+    loadText(scene, new Vector3(-43, 3, -3), 2, "Mindul Page");
+    loadTextKR(scene, new Vector3(-43, 3, 8), 1.5, "민둘이의 포트폴리오용 페이지");
   },[]);
 
   useEffect(() => {
     if (canvasRef.current) {
       renderer = new THREE.WebGLRenderer({canvas: canvasRef.current, antialias: true});
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFShadowMap;
     }
     return;
   }, [canvasRef]);
@@ -69,18 +86,21 @@ const ThreeCanvas = () => {
         router.push("/"+sections[Math.round(0.2*(tw*10-1))]);
         ani=0; aniMax=2; aniMin=1;
       }
-  
-      const {x, y, z} = witch(5, 4, cw);
+
+      const {x, y, z} = witch(horizontalRadius, verticalRadius, cw);
       curVector.set(x, y, z);
-      lookAtVector.set(0, 0, z);
+      lookAtVector.set(cw>0?0:x, 0, z);
       
       ball.position.set(curVector.x, curVector.y, curVector.z);
-      camera.position.set(0, zRadius*Math.sin(zTheta), zRadius*Math.cos(zTheta)+curVector.z);
+      camera.position.set(cw>0?0:x, zRadius*Math.sin(zTheta), zRadius*Math.cos(zTheta)+curVector.z);
       camera.lookAt(lookAtVector);
+      camera.aspect=window.innerWidth/window.innerHeight;
+      camera.fov=45*window.innerWidth/window.innerHeight;
       
       raycaster.setFromCamera( pointer, camera );
   
-      setSectionSize(tw, ani);
+      setSectionSize();
+      setSectionAnimate();
   
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.render( scene, camera );
@@ -97,23 +117,67 @@ const ThreeCanvas = () => {
 
 export default ThreeCanvas;
 
-const setSectionSize = (tw:number, ani: number) => {
+const setSectionSize = () => {
   ss.forEach((elem, i)=>{
+    const [cube, light] = elem;
     if(Math.abs(0.2*(tw*10-1)-i)<0.001){
-      elem.scale.x=elem.scale.x<aniMax?elem.scale.x+(aniMax-elem.scale.x)*ani:aniMax;
-      elem.scale.y=elem.scale.y<aniMax?elem.scale.y+(aniMax-elem.scale.y)*ani:aniMax;
-      elem.scale.z=elem.scale.z<aniMax?elem.scale.z+(aniMax-elem.scale.z)*ani:aniMax;
+      cube.scale.x=cube.scale.x<aniMax?cube.scale.x+(aniMax-cube.scale.x)*ani:aniMax;
+      cube.scale.y=cube.scale.y<aniMax?cube.scale.y+(aniMax-cube.scale.y)*ani:aniMax;
+      cube.scale.z=cube.scale.z<aniMax?cube.scale.z+(aniMax-cube.scale.z)*ani:aniMax;
+      light.intensity=light.intensity<aniMax-1?light.intensity+(aniMax-1-light.intensity)*ani:aniMax-1;
     } else {
-      elem.scale.x=elem.scale.x>aniMin?elem.scale.x-(elem.scale.x-aniMin)*ani:aniMin;
-      elem.scale.y=elem.scale.y>aniMin?elem.scale.y-(elem.scale.y-aniMin)*ani:aniMin;
-      elem.scale.z=elem.scale.z>aniMin?elem.scale.z-(elem.scale.z-aniMin)*ani:aniMin;
+      cube.scale.x=cube.scale.x>aniMin?cube.scale.x-(cube.scale.x-aniMin)*ani:aniMin;
+      cube.scale.y=cube.scale.y>aniMin?cube.scale.y-(cube.scale.y-aniMin)*ani:aniMin;
+      cube.scale.z=cube.scale.z>aniMin?cube.scale.z-(cube.scale.z-aniMin)*ani:aniMin;
+      light.intensity=light.intensity>aniMin-1?light.intensity-(light.intensity-aniMin+1)*ani:aniMin-1;
     }
   });
 };
 
+const setSectionAnimate = () => {
+  ss.forEach((elem)=>{elem[0].rotateY(anix);});
+};
+
+const onTouchStart = ( event:TouchEvent ) => {
+  swipeX=event.targetTouches[0].clientX;
+  swipeY=event.targetTouches[0].clientY;
+}
+
+const onTouch = ( event:TouchEvent ) => {
+  const sensitivityX=window.innerWidth/3, sensitivityY=window.innerHeight/3;
+  if(event.targetTouches[0].clientX-swipeX>sensitivityX) {
+    canSwipe=-1; swipeTW=tw;
+  }
+  else if(swipeX-event.targetTouches[0].clientX>sensitivityX) {
+    canSwipe=1;
+  }
+  else if(swipeY-event.targetTouches[0].clientY>sensitivityY) {
+    ani=0;
+    swipeY-=sensitivityY;
+    tw=tw>0?Math.min(ss.length*0.5-0.4, tw+0.5):0.1;
+  }
+  else if(event.targetTouches[0].clientY-swipeY>sensitivityY) {
+    ani=0;
+    swipeY+=sensitivityY;
+    tw=tw=tw>0.1?Math.max(0.1, tw-0.5):twStart;
+  }
+}
+
+const onTouchEnd = ( event:TouchEvent ) => {
+  ani=0;
+  if(canSwipe==-1) tw=twStart;
+  if(canSwipe==1) tw=swipeTW;
+  canSwipe=0;
+}
+
 const onWheel = ( event:WheelEvent ) => {
   ani=0;
-  tw = Math.max(1/10, Math.min(tw+event.deltaY/200, (5*5-4)/10));
+  if(tw>0){
+    tw = Math.max(-0.4, Math.min(tw+event.deltaY/200, (5*ss.length-4)/10));
+    if(tw<0) tw=twStart;
+  } else {
+    tw = Math.max(twStart, Math.min(tw+event.deltaY, 0.1));
+  }
 };
 
 const onPointerMove = ( event:PointerEvent ) => {
@@ -122,24 +186,30 @@ const onPointerMove = ( event:PointerEvent ) => {
   pointer.set(x, y);
 };
 
-const onClick = (event:Event)=>{
+const onClick = (event:Event) => {
   ani=0;
+  if(tw<0) {tw=0.1; return;}
+
   const intersects = raycaster.intersectObjects(scene.children).filter(
     (i: THREE.Intersection<THREE.Object3D<THREE.Event>>) => {
-      return ss.some((elem)=>(elem.uuid==i.object.uuid))
+      return ss.some((elem)=>(elem[0].uuid==i.object.uuid))
     }
   );
   
   if(intersects.length){
     const intersect = intersects.shift() as THREE.Intersection<THREE.Object3D<THREE.Event>>;
-    const i=ss.findIndex((e)=>(e.uuid==intersect.object.uuid));
+    const i=ss.findIndex((e)=>(e[0].uuid==intersect.object.uuid));
     console.log(Math.abs(0.2*(tw*10-1)-i));
     if(Math.abs(0.2*(tw*10-1)-i)<0.001){
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("click", onClick);
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
       ani=0; aniMax=30; aniMin=0;
     }
     tw = (5*i+1)/10;
   }
 };
+

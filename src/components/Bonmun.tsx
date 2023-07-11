@@ -10,9 +10,7 @@ const Bonmun = (props: BonmunProps) => {
       <h1 className="mb-4 text-2xl font-extrabold tracking-tight leading-none text-black md:text-3xl lg:text-4xl">
         {title}
       </h1>
-      <p>
-        {children}
-      </p> 
+      {children}
     </div>
   );
 }
