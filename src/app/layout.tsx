@@ -4,8 +4,8 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Mindul Page',
-  description: 'the Page for Mindul`s portfolio',
+  // title: 'Mindul Page',
+  // description: 'the Page for Mindul`s portfolio',
   openGraph: {
     title: 'Mindul Page',
     description: 'the Page for Mindul`s portfolio',
@@ -13,15 +13,14 @@ export const metadata = {
     siteName: 'Mindul Page',
     images: [
       {
-        url: '/meta.png',
+        url: '/img/meta.png',
         width: 804,
         height: 804,
       },
     ],
     locale: 'kr',
     type: 'website',
-  },
-  icon: '/icon.jpg',
+  }
 }
 
 export default function RootLayout({children,}: {children: React.ReactNode}) {
