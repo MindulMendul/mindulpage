@@ -4,6 +4,8 @@ import Sidebar from "@/components/Sidebar";
 import Offcanvas from "@/components/Offcanvas";
 import SidebarButton from "@/components/SidebarButton";
 import RouteButton from "@/components/RouteButton";
+import Youtube from "@/components/youtube";
+import Bold from "@/components/Bold";
 
 const VI828583 = () => {
   const _dir=`bg-[url(/img/matilda.png)]`;
@@ -14,7 +16,8 @@ const VI828583 = () => {
 
       <Sidebar>
         <SidebarButton title={"VI-828583"} />
-        <SidebarButton title={"조작방법"} />
+        <SidebarButton title={"조작법"} />
+        <SidebarButton title={"소스코드"} />
       </Sidebar>
       
       <div className="p-4 sm:mr-32 2xl:mx-48 md:px-24 lg:px-36 xl:px-60 py-6 px-6">
@@ -22,7 +25,8 @@ const VI828583 = () => {
           해당 프로젝트는 한국 게임메이커 커뮤니티 KGMC에서 주최했던, [제 6회 CGM 게임잼] 출품작입니다.<br/>
           2D 디펜스게임으로 제작되었으며, 스테이지 5단계를 모두 클리어하면 승리하는 게임입니다.<br/>
           플레이시간은 20분 전후로 예상하고, 조금 어려울 것으로 예상합니다.<br/><br/>
-          <RouteButton dir={"https://github.com/MindulMendul/VI828583"}>소스코드 보기</RouteButton><br/>
+          <RouteButton dir={"https://cafe.naver.com/crazygm/192961"}>플레이하기</RouteButton><br/><br/>
+          <Youtube videoId="4KDl1fejJl0"/><br/>
         </Bonmun>
 
         <Bonmun title="조작법">
@@ -35,6 +39,15 @@ const VI828583 = () => {
           7. 적들과 부딪히면 플레이어는 잠시 공격을 멈춥니다.<br/>
           8. 능력이 안되어 게임을 잠시 멈추는 걸 만들지 못했습니다.<br/>
           9. 게임을 끄려면 윈도우 창의 x 버튼을 사용하거나 esc 버튼을 사용하세요.<br/>
+        </Bonmun>
+
+        <Bonmun title="소스코드">
+          해당 프로젝트는 아래 기술스택을 포함하고 있습니다.<br/><br/>
+          <Bold>개발엔진</Bold><br/>
+          GMS(Game Maker Studio)<br/><br/>
+          <Bold>개발언어</Bold><br/>
+          GML(Game Maker Language)<br/><br/>
+          <RouteButton dir={"https://github.com/MindulMendul/VI828583"}>소스코드 보기</RouteButton><br/>
         </Bonmun>
       </div>
     </main>
