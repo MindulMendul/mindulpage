@@ -144,7 +144,7 @@ const onTouchStart = ( event:TouchEvent ) => {
 }
 
 const onTouch = ( event:TouchEvent ) => {
-  const sensitivityX=window.innerWidth/3, sensitivityY=window.innerHeight/3;
+  const sensitivityX=window.innerWidth/4, sensitivityY=window.innerHeight/6;
   if(event.targetTouches[0].clientX-swipeX>sensitivityX) {
     canSwipe=-1; swipeTW=tw;
   }
