@@ -64,7 +64,7 @@ const MindulBot = () => {
           3. dotenv<br/>
           4. nodemon<br/>
           5. play-dl<br/><br/>
-          <RouteButton dir={"https://github.com/MindulMendul/SlidePuzzle"}>소스코드 보기</RouteButton><br/>
+          <RouteButton dir={"https://github.com/MindulMendul/MindulBot"}>소스코드 보기</RouteButton><br/>
         </Bonmun>
       </div>
     </main>
